@@ -1,7 +1,7 @@
 sbog/rsnapshot
 ==============
 
-Role to install and configure Rainloop
+Role to install and configure rsnapshot.
 
 #### Requirements
 
