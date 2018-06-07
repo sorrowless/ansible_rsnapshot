@@ -1,0 +1,12 @@
+---
+- name: Backup | Prerequisites | Override default data with user one
+  set_fact:
+    rsnapshot: "{{ rsnapshot_defaults | combine(rsnapshot, recursive=True) }}"
+  tags:
+    - always
+
+- include: master.yml
+  when: rsnapshot.master
+
+- include: slaves.yml
+  when: not rsnapshot.master

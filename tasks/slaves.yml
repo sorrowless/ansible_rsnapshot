@@ -1,0 +1,14 @@
+---
+- name: Backup | Configure | Create backup user on slaves
+  user:
+    name: "{{ rsnapshot.backup_user }}"
+    comment: "Backup user"
+    createhome: yes
+    state: present
+    shell: /bin/bash
+
+- name: Backup | Configure | Ensure master public key for backup user
+  authorized_key:
+    user: "{{ rsnapshot.backup_user }}"
+    state: present
+    key: "{{ ssh_master_public_key.content | b64decode }}"

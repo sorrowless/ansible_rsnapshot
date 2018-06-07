@@ -1,0 +1,11 @@
+[Unit]
+Description=rsnapshot weekly backup
+
+[Timer]
+#OnCalendar=Monday  *-*-* 04:30:00
+OnCalendar={{ rsnapshot.weeklytimer }}
+Persistent=true
+Unit=rsnapshot@weekly.service
+
+[Install]
+WantedBy=timers.target

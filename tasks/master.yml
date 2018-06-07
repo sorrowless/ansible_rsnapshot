@@ -1,0 +1,69 @@
+---
+- name: Backup | Prerequisites | Install rsnapshot package
+  package:
+    name: rsnapshot
+    state: latest
+
+- name: Backup | Configure | Ensure rsnapshot config on target nodes
+  template:
+    src: rsnapshot.conf
+    dest: /etc/rsnapshot.conf
+    mode: 0644
+    owner: root
+    group: root
+
+- name: Backup | Configure | Create backup user on masters
+  user:
+    name: "{{ rsnapshot.backup_user }}"
+    comment: "Backup user"
+    createhome: yes
+    state: present
+    shell: /bin/bash
+
+- name: Backup | Configure | Ensure backup directory
+  file:
+    path: "{{ rsnapshot.snapshot_root }}"
+    state: directory
+    owner: "{{ rsnapshot.backup_user }}"
+    group: "{{ rsnapshot.backup_user }}"
+    mode: 0700
+
+- name: Backup | Configure | Ensure backup logfile
+  file:
+    path: "{{ rsnapshot.logfile }}"
+    state: file
+    owner: "{{ rsnapshot.backup_user }}"
+    group: "{{ rsnapshot.backup_user }}"
+    mode: 0664
+
+- name: Backup | Configure | Ensure SSH keys for backup user
+  command: "ssh-keygen -t rsa -f ~/.ssh/id_rsa -N ''"
+  become_user: "{{ rsnapshot.backup_user }}"
+  args:
+    creates: "~/.ssh/id_rsa"
+
+- name: Backup | Configure | Get master public key for backup user
+  slurp:
+    src: "~/.ssh/id_rsa.pub"
+  register: ssh_master_public_key
+  become_user: "{{ rsnapshot.backup_user }}"
+  changed_when: false
+  run_once: true
+
+- name: Backup | Configure | Ensure needed systemctl service exists
+  template:
+    src: "{{ item }}"
+    dest: /etc/systemd/system/
+  with_items:
+    - "rsnapshot@.service"
+    - "rsnapshot-daily.timer"
+    - "rsnapshot-weekly.timer"
+
+- name: Backup | Enable systemd timer related to backups
+  systemd:
+    name: "{{ item }}"
+    daemon-reload: yes
+    enabled: yes
+  with_items:
+    - "rsnapshot-daily.timer"
+    - "rsnapshot-weekly.timer"

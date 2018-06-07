@@ -1,0 +1,17 @@
+---
+# This dict should be modified by user. It will be merged with
+# rsnapshot_defaults later
+rsnapshot: {}
+rsnapshot_defaults:
+  backup_user: backuper
+  master: false
+  snapshot_root: /var/cache/rsnapshot/
+  retain_daily: 7
+  retain_weekly: 2
+  logfile: /var/log/rsnapshot.log
+  pid_directory: /var/run/rsnapshot
+  rsync_ssh_port: 909
+  link_dest: 1
+  backups: []
+  dailytimer: "05:30"
+  weeklytimer: "Monday *-*-* 04:30:00"

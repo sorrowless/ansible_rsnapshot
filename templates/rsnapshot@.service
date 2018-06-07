@@ -1,0 +1,13 @@
+[Unit]
+Description=rsnapshot (%I) backup
+
+[Service]
+Type=oneshot
+User={{ rsnapshot.backup_user }}
+Group={{ rsnapshot.backup_user }}
+PermissionsStartOnly=true
+ExecStartPre=/bin/mkdir -p {{ rsnapshot.pid_directory }}
+ExecStartPre=/bin/chown {{ rsnapshot.backup_user }}:{{ rsnapshot.backup_user }} {{ rsnapshot.pid_directory }}
+Nice=19
+IOSchedulingClass=idle
+ExecStart=/usr/bin/rsnapshot %I
