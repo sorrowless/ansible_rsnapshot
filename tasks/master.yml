@@ -31,7 +31,7 @@
 - name: Backup | Configure | Ensure backup logfile
   file:
     path: "{{ rsnapshot.logfile }}"
-    state: file
+    state: touch
     owner: "{{ rsnapshot.backup_user }}"
     group: "{{ rsnapshot.backup_user }}"
     mode: 0664
