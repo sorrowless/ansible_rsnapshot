@@ -5,8 +5,8 @@
   tags:
     - always
 
-- include: master.yml
+- include_tasks: master.yml
   when: rsnapshot.master
 
-- include: slaves.yml
+- include_tasks: slaves.yml
   when: not rsnapshot.master
