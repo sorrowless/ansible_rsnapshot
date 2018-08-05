@@ -28,6 +28,11 @@
     group: "{{ rsnapshot.backup_user }}"
     mode: 0700
 
+- name: Backup | Configure | Register if backup logfile exists
+  stat:
+    path: "{{ rsnapshot.logfile }}"
+  register: rsnapshot_backup_file
+
 - name: Backup | Configure | Ensure backup logfile
   file:
     path: "{{ rsnapshot.logfile }}"
@@ -35,6 +40,7 @@
     owner: "{{ rsnapshot.backup_user }}"
     group: "{{ rsnapshot.backup_user }}"
     mode: 0664
+  when: rsnapshot_backup_file.stat.exists == False
 
 - name: Backup | Configure | Ensure SSH keys for backup user
   command: "ssh-keygen -t rsa -f ~/.ssh/id_rsa -N ''"
