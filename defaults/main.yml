@@ -15,3 +15,6 @@ rsnapshot_defaults:
   backups: []
   dailytimer: "05:30"
   weeklytimer: "Monday *-*-* 04:30:00"
+  # Run some systemd service in case of backups failure. Can be useful in case
+  # you want to recieve an email about failed backup job.
+  on_failure: False

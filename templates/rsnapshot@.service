@@ -1,5 +1,8 @@
 [Unit]
 Description=rsnapshot (%I) backup
+{% if rsnapshot.on_failure %}
+OnFailure={{ rsnapshot.on_failure }}
+{% endif %}
 
 [Service]
 Type=oneshot
