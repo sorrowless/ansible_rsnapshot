@@ -23,6 +23,7 @@ rsnapshot:
   backups: []
   dailytimer: "05:30"
   weeklytimer: "Monday *-*-* 04:30:00"
+  on_failure: False
 ```
 
 #### Dependencies
