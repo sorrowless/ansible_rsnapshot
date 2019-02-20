@@ -40,11 +40,12 @@
     owner: "{{ rsnapshot.backup_user }}"
     group: "{{ rsnapshot.backup_user }}"
     mode: 0664
-  when: rsnapshot_backup_file.stat.exists == False
+  when: not rsnapshot_backup_file.stat.exists
 
 - name: Backup | Configure | Ensure SSH keys for backup user
   command: "ssh-keygen -t rsa -f ~/.ssh/id_rsa -N ''"
   become_user: "{{ rsnapshot.backup_user }}"
+  become: yes
   args:
     creates: "~/.ssh/id_rsa"
 
@@ -53,6 +54,7 @@
     src: "~/.ssh/id_rsa.pub"
   register: ssh_master_public_key
   become_user: "{{ rsnapshot.backup_user }}"
+  become: yes
   changed_when: false
   run_once: true
 
