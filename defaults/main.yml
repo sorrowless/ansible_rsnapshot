@@ -18,3 +18,4 @@ rsnapshot_defaults:
   # Run some systemd service in case of backups failure. Can be useful in case
   # you want to recieve an email about failed backup job.
   on_failure: False
+  #on_failure: "apprise-backup-telegram@%n.service"
