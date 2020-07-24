@@ -12,3 +12,5 @@
     user: "{{ rsnapshot.backup_user }}"
     state: present
     key: "{{ ssh_master_public_key.content | b64decode }}"
+  tags:
+    - rsnapshot_auth_keys
