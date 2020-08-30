@@ -19,7 +19,7 @@
     createhome: yes
     state: present
     shell: /bin/bash
-  when: create_backup_users
+  when: rsnapshot.create_backup_users
 
 - name: Backup | Configure | Ensure backup directory
   file:
@@ -49,7 +49,7 @@
   become: yes
   args:
     creates: "~/.ssh/id_rsa"
-  when: create_ssh_keys
+  when: rsnapshot.create_ssh_keys
 
 - name: Backup | Configure | Get master public key for backup user
   slurp:
@@ -59,7 +59,7 @@
   become: yes
   changed_when: false
   run_once: true
-  when: create_ssh_keys
+  when: rsnapshot.create_ssh_keys
 
 - name: Backup | Configure | Ensure needed systemctl service exists
   template:

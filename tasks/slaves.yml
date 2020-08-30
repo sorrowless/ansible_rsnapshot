@@ -6,13 +6,13 @@
     createhome: yes
     state: present
     shell: /bin/bash
-  when: create_backup_users
+  when: rsnapshot.create_backup_users
 
 - name: Backup | Configure | Ensure master public key for backup user
   authorized_key:
     user: "{{ rsnapshot.backup_user }}"
     state: present
     key: "{{ ssh_master_public_key.content | b64decode }}"
-  when: create_ssh_keys
+  when: rsnapshot.create_ssh_keys
   tags:
     - rsnapshot_auth_keys
