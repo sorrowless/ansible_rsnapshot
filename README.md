@@ -12,6 +12,8 @@ Ansible 2.4
 ```yaml
 rsnapshot:
   backup_user: backuper
+  create_backup_users: false
+  create_ssh_keys: false
   master: false
   snapshot_root: /var/cache/rsnapshot/
   retain_daily: 7
